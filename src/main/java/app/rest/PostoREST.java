@@ -48,6 +48,12 @@ public class PostoREST {
   @Qualifier("AbastecimentoBusiness")
   private AbastecimentoBusiness abastecimentoBusiness;
   /**
+   * @generated
+   */
+  @Autowired
+  @Qualifier("CombustivelBusiness")
+  private CombustivelBusiness combustivelBusiness;
+  /**
    * Serviço exposto para novo registro de acordo com a entidade fornecida
    *
    * @generated
@@ -199,6 +205,49 @@ public class PostoREST {
   Posto posto = this.postoBusiness.get(instanceId);
   entity.setPosto(posto);
     return this.abastecimentoBusiness.post(entity);
+  }
+
+
+  /**
+   * OneToMany Relationship GET
+   * @generated
+   */
+  @RequestMapping(method = RequestMethod.GET
+  , value="/{instanceId}/Combustivel")
+  public HttpEntity<PagedResources<Combustivel>> findCombustivel(@PathVariable("instanceId") java.lang.String instanceId, Pageable pageable, PagedResourcesAssembler assembler) {
+    return new ResponseEntity<>(assembler.toResource(postoBusiness.findCombustivel(instanceId, pageable)), HttpStatus.OK);
+  }
+
+  /**
+   * OneToMany Relationship DELETE
+   * @generated
+   */
+  @RequestMapping(method = RequestMethod.DELETE
+  , value="/{instanceId}/Combustivel/{relationId}")
+  public void deleteCombustivel(@PathVariable("relationId") java.lang.String relationId) throws Exception {
+    this.combustivelBusiness.delete(relationId);
+  }
+
+  /**
+   * OneToMany Relationship PUT
+   * @generated
+   */
+  @RequestMapping(method = RequestMethod.PUT
+  , value="/{instanceId}/Combustivel/{relationId}")
+  public Combustivel putCombustivel(@Validated @RequestBody final Combustivel entity, @PathVariable("relationId") java.lang.String relationId) throws Exception {
+    return this.combustivelBusiness.put(entity);
+  }
+
+  /**
+   * OneToMany Relationship POST
+   * @generated
+   */
+  @RequestMapping(method = RequestMethod.POST
+  , value="/{instanceId}/Combustivel")
+  public Combustivel postCombustivel(@Validated @RequestBody final Combustivel entity, @PathVariable("instanceId") java.lang.String instanceId) throws Exception {
+  Posto posto = this.postoBusiness.get(instanceId);
+  entity.setPosto(posto);
+    return this.combustivelBusiness.post(entity);
   }
 
   /**

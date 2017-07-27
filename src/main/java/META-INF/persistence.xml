@@ -9,6 +9,7 @@
         <class>app.entity.User</class>
         <class>app.entity.Comentario</class>
         <class>app.entity.Role</class>
+        <class>app.entity.Combustivel</class>
         <class>app.entity.Posto</class>
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>

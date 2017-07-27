@@ -157,6 +157,19 @@ public class PostoBusiness {
     // end-user-code        
     return result;    
   }
+  
+  /**
+   * @generated modifiable
+   * OneToMany Relation
+   */  
+  public Page<Combustivel> findCombustivel(java.lang.String id, Pageable pageable) {
+    // begin-user-code
+    // end-user-code  
+    Page<Combustivel> result = repository.findCombustivel(id, pageable);
+    // begin-user-code  
+    // end-user-code        
+    return result;    
+  }
   /**
    * @generated modifiable
    * ManyToMany Relation - Searchable fields - General search (Only strings fields)

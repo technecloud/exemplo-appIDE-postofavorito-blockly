@@ -80,6 +80,13 @@ public interface PostoDAO extends JpaRepository<Posto, java.lang.String> {
    */
   @Query("SELECT entity FROM Abastecimento entity WHERE entity.posto.id = :id")
   public Page<Abastecimento> findAbastecimento(@Param(value="id") java.lang.String id, Pageable pageable);
+
+  /**
+   * OneToMany Relation
+   * @generated
+   */
+  @Query("SELECT entity FROM Combustivel entity WHERE entity.posto.id = :id")
+  public Page<Combustivel> findCombustivel(@Param(value="id") java.lang.String id, Pageable pageable);
   
   /**
    * ManyToOne Relation - Searchable fields - General search (Only strings fields)
