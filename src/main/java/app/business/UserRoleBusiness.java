@@ -158,30 +158,4 @@ public class UserRoleBusiness {
     // end-user-code
     return result;
   }
-  /**
-   * Foreign Key User
-   * @generated
-   */
-  public Page<UserRole> findUserRolesByUser(java.lang.String instanceId, Pageable pageable) {
-    // begin-user-code
-    // end-user-code  
-    Page<UserRole> result = repository.findUserRolesByUser(instanceId, pageable);
-    // begin-user-code  
-    // end-user-code        
-    return result;
-  }
-  
-  /**
-   * Foreign Key Role
-   * @generated
-   */
-  public Page<UserRole> findUserRolesByRole(java.lang.String instanceId, Pageable pageable) {
-    // begin-user-code
-    // end-user-code  
-    Page<UserRole> result = repository.findUserRolesByRole(instanceId, pageable);
-    // begin-user-code  
-    // end-user-code        
-    return result;
-  }
-  
 }

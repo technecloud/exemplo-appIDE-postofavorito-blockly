@@ -4,7 +4,6 @@ import java.io.*;
 import javax.persistence.*;
 import java.util.*;
 import javax.xml.bind.annotation.*;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * Classe que representa a tabela USER
@@ -12,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  */
 @Entity
 @Table(name = "\"USER\"" ,uniqueConstraints=@UniqueConstraint(columnNames={
-"login" }))
+"id" ,"login" }))
 @XmlRootElement
 public class User implements Serializable {
 
@@ -21,6 +20,13 @@ public class User implements Serializable {
    * @generated
    */
   private static final long serialVersionUID = 1L;
+  
+  /**
+   * @generated
+   */
+  @Id
+  @Column(name = "id", nullable = false, insertable=true, updatable=true)
+  private java.lang.String id = UUID.randomUUID().toString().toUpperCase();
   
   /**
   * @generated
@@ -35,12 +41,6 @@ public class User implements Serializable {
   private java.lang.String name;
   
   /**
-   * @generated
-   */
-  @Id
-  private java.lang.String id = UUID.randomUUID().toString().toUpperCase();
-  
-  /**
   * @generated
   */
   @Column(name = "login", nullable = false, unique = true, insertable=true, updatable=true)
@@ -50,7 +50,7 @@ public class User implements Serializable {
   * @generated
   */
   @Column(name = "picture", nullable = true, unique = false, insertable=true, updatable=true)
-  private java.lang.String picture;
+  private byte[] picture;
   
   /**
   * @generated
@@ -64,16 +64,16 @@ public class User implements Serializable {
   @Column(name = "theme", nullable = true, unique = false, insertable=true, updatable=true)
   private java.lang.String theme;
   
-    /**
+  /**
    * Construtor
    * @generated
    */
   public User(){
   }
 
+  
   /**
    * Obtém email
-   * 
    * return email
    * @generated
    */
@@ -90,9 +90,9 @@ public class User implements Serializable {
     this.email = email;
     return this;
   }
+  
   /**
    * Obtém name
-   * 
    * return name
    * @generated
    */
@@ -109,9 +109,9 @@ public class User implements Serializable {
     this.name = name;
     return this;
   }
+  
   /**
    * Obtém id
-   * 
    * return id
    * @generated
    */
@@ -128,9 +128,9 @@ public class User implements Serializable {
     this.id = id;
     return this;
   }
+  
   /**
    * Obtém login
-   * 
    * return login
    * @generated
    */
@@ -147,13 +147,13 @@ public class User implements Serializable {
     this.login = login;
     return this;
   }
+  
   /**
    * Obtém picture
-   * 
    * return picture
    * @generated
    */
-  public java.lang.String getPicture(){
+  public byte[] getPicture(){
     return this.picture;
   }
   
@@ -162,13 +162,13 @@ public class User implements Serializable {
    * @param picture picture
    * @generated
    */
-  public User setPicture(java.lang.String picture){
+  public User setPicture(byte[] picture){
     this.picture = picture;
     return this;
   }
+  
   /**
    * Obtém password
-   * 
    * return password
    * @generated
    */
@@ -185,9 +185,9 @@ public class User implements Serializable {
     this.password = password;
     return this;
   }
+  
   /**
    * Obtém theme
-   * 
    * return theme
    * @generated
    */

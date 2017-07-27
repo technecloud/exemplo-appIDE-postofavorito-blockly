@@ -106,42 +106,4 @@ public class RoleBusiness {
     // end-user-code
     return result;
   }
-  
-  /**
-   * @generated modifiable
-   * OneToMany Relation
-   */  
-  public Page<UserRole> findUserRole(java.lang.String id, Pageable pageable) {
-    // begin-user-code
-    // end-user-code  
-    Page<UserRole> result = repository.findUserRole(id, pageable);
-    // begin-user-code  
-    // end-user-code        
-    return result;    
-  }
-  /**
-   * @generated modifiable
-   * ManyToMany Relation
-   */  
-  public Page<User> listUser(java.lang.String id, Pageable pageable) {
-    // begin-user-code
-    // end-user-code  
-    Page<User> result = repository.listUser(id, pageable);
-    // begin-user-code
-    // end-user-code
-    return result;            
-  }
-  
-  /**
-   * @generated modifiable
-   * ManyToMany Relation
-   */    
-  public int deleteUser(java.lang.String instanceId, java.lang.String relationId) {
-    // begin-user-code
-    // end-user-code  
-    int result = repository.deleteUser(instanceId, relationId);
-    // begin-user-code
-    // end-user-code  
-    return result;  
-  }
 }

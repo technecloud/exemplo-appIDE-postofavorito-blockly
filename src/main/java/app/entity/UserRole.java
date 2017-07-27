@@ -4,7 +4,6 @@ import java.io.*;
 import javax.persistence.*;
 import java.util.*;
 import javax.xml.bind.annotation.*;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * Classe que representa a tabela USERROLE
@@ -25,21 +24,28 @@ public class UserRole implements Serializable {
    * @generated
    */
   @Id
+  @Column(name = "id", nullable = false, insertable=true, updatable=true)
   private java.lang.String id = UUID.randomUUID().toString().toUpperCase();
   
   /**
   * @generated
   */
-  @ManyToOne
-  @JoinColumn(name="fk_user", referencedColumnName = "id", insertable=true, updatable=true)
+  @OneToOne
+  @JoinColumn(name="fk_user", nullable = true, referencedColumnName = "id", insertable=true, updatable=true)
   private User user;
   
   /**
   * @generated
   */
-  @ManyToOne
-  @JoinColumn(name="fk_role", referencedColumnName = "id", insertable=true, updatable=true)
+  @OneToOne
+  @JoinColumn(name="fk_role", nullable = true, referencedColumnName = "id", insertable=true, updatable=true)
   private Role role;
+  
+  /**
+  * @generated
+  */
+  @Column(name = "theme", nullable = true, unique = false, insertable=true, updatable=true)
+  private java.lang.String theme;
   
   /**
    * Construtor
@@ -48,9 +54,9 @@ public class UserRole implements Serializable {
   public UserRole(){
   }
 
+  
   /**
    * Obtém id
-   * 
    * return id
    * @generated
    */
@@ -67,9 +73,9 @@ public class UserRole implements Serializable {
     this.id = id;
     return this;
   }
+  
   /**
    * Obtém user
-   * 
    * return user
    * @generated
    */
@@ -86,9 +92,9 @@ public class UserRole implements Serializable {
     this.user = user;
     return this;
   }
+  
   /**
    * Obtém role
-   * 
    * return role
    * @generated
    */
@@ -103,6 +109,25 @@ public class UserRole implements Serializable {
    */
   public UserRole setRole(Role role){
     this.role = role;
+    return this;
+  }
+  
+  /**
+   * Obtém theme
+   * return theme
+   * @generated
+   */
+  public java.lang.String getTheme(){
+    return this.theme;
+  }
+  
+  /**
+   * Define theme
+   * @param theme theme
+   * @generated
+   */
+  public UserRole setTheme(java.lang.String theme){
+    this.theme = theme;
     return this;
   }
   

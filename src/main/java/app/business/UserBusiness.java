@@ -11,6 +11,7 @@ import java.util.*;
 import app.dao.*;
 import app.entity.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import cloud.CloudManager;
 
 /**
  * Classe que representa a camada de negócios de UserBusiness
@@ -28,6 +29,9 @@ public class UserBusiness {
    */
   private String ENCRYPT = "$2a$10$";
 
+  private static final String DROPBOX_APP_ACCESS_TOKEN = "DpjBW-OF3tAAAAAAAAAAWCX4bUpsKcaetf3T6YOHMu1T7ljoZwOs4F8gEzStKi4L";
+
+  private final CloudManager cloudManager = CloudManager.newInstance().byID("id").toFields("picture");
 
   /**
    * Instância da classe UserDAO que faz o acesso ao banco de dados
@@ -53,7 +57,14 @@ public class UserBusiness {
     String encryptionPassword = new BCryptPasswordEncoder().encode(formPassword);
     entity.setPassword(encryptionPassword);      
     User result = null;
-    result = repository.save(entity);
+    byte[] picture = entity.getPicture();
+    try {
+      result = repository.save(entity);
+      result.setPicture(picture);
+      this.cloudManager.byEntity(result).build().dropbox(DROPBOX_APP_ACCESS_TOKEN).upload();
+    } catch (Exception e) {
+      log.error(e.getMessage());
+    }
     // begin-user-code
     // end-user-code
     return result;
@@ -72,7 +83,14 @@ public class UserBusiness {
     String encryptionPassword = formPassword.startsWith(ENCRYPT) ? formPassword : new BCryptPasswordEncoder().encode(formPassword);
     entity.setPassword(encryptionPassword);      
     User result = null;
-    result = repository.saveAndFlush(entity);
+    byte[] picture = entity.getPicture();
+    try {
+      result = repository.saveAndFlush(entity);
+      result.setPicture(picture);
+      this.cloudManager.byEntity(result).build().dropbox(DROPBOX_APP_ACCESS_TOKEN).upload();
+    } catch (Exception e) {
+      log.error(e.getMessage());
+    }
     // begin-user-code
     // end-user-code
     return result;
@@ -88,6 +106,7 @@ public class UserBusiness {
     // end-user-code
     User entity = this.get(id);
     this.repository.delete(entity);
+      this.cloudManager.byEntity(entity).build().dropbox(DROPBOX_APP_ACCESS_TOKEN).delete();
     // begin-user-code  
     // end-user-code        
   }
@@ -101,6 +120,7 @@ public class UserBusiness {
     // begin-user-code  
     // end-user-code
     User result = repository.findOne(id);
+    this.cloudManager.byEntity(result).build().dropbox(DROPBOX_APP_ACCESS_TOKEN).popule(result);
     // begin-user-code
     // end-user-code
     return result;
@@ -117,6 +137,7 @@ public class UserBusiness {
     // begin-user-code
     // end-user-code
     Page<User> result = repository.list(pageable);
+    result.forEach(item -> cloudManager.byEntity(item).build().dropbox(DROPBOX_APP_ACCESS_TOKEN).popule(item));
     // begin-user-code
     // end-user-code
     return result;
@@ -130,6 +151,7 @@ public class UserBusiness {
     // begin-user-code
     // end-user-code
     Page<User> result = repository.findByRole( roleid, pageable);
+    result.forEach(item -> cloudManager.byEntity(item).build().dropbox(DROPBOX_APP_ACCESS_TOKEN).popule(item));
     // begin-user-code
     // end-user-code
     return result;
@@ -143,6 +165,7 @@ public class UserBusiness {
     // begin-user-code
     // end-user-code
     Page<User> result = repository.findByLogin( login, pageable);
+    result.forEach(item -> cloudManager.byEntity(item).build().dropbox(DROPBOX_APP_ACCESS_TOKEN).popule(item));
     // begin-user-code
     // end-user-code
     return result;
@@ -152,22 +175,99 @@ public class UserBusiness {
    * @generated modifiable
    * OneToMany Relation
    */  
-  public Page<UserRole> findUserRole(java.lang.String id, Pageable pageable) {
+  public Page<Carro> findCarro(java.lang.String id, Pageable pageable) {
     // begin-user-code
     // end-user-code  
-    Page<UserRole> result = repository.findUserRole(id, pageable);
+    Page<Carro> result = repository.findCarro(id, pageable);
     // begin-user-code  
     // end-user-code        
     return result;    
   }
   /**
    * @generated modifiable
-   * ManyToMany Relation
+   * OneToMany Relation - Searchable fields - General search (Only strings fields)
    */  
-  public Page<Role> listRole(java.lang.String id, Pageable pageable) {
+  public Page<Comentario> findComentarioGeneralSearch(java.lang.String search, java.lang.String id,  Pageable pageable) {
     // begin-user-code
     // end-user-code  
-    Page<Role> result = repository.listRole(id, pageable);
+    Page<Comentario> result = repository.findComentarioGeneralSearch(search, id,  pageable);
+    // begin-user-code  
+    // end-user-code        
+    return result;    
+  }
+  
+  /**
+   * @generated modifiable
+   * OneToMany Relation - Searchable fields - Specific search
+   */  
+  public Page<Comentario> findComentarioSpecificSearch(java.lang.String id, java.lang.String data, java.lang.String texto, java.lang.Boolean moderado, Pageable pageable) {
+    // begin-user-code
+    // end-user-code  
+    Page<Comentario> result = repository.findComentarioSpecificSearch(id, data, texto, moderado, pageable);
+    // begin-user-code  
+    // end-user-code        
+    return result;    
+  }
+  
+  /**
+   * @generated modifiable
+   * OneToMany Relation
+   */  
+  public Page<Comentario> findComentario(java.lang.String id, Pageable pageable) {
+    // begin-user-code
+    // end-user-code  
+    Page<Comentario> result = repository.findComentario(id, pageable);
+    // begin-user-code  
+    // end-user-code        
+    return result;    
+  }
+  
+  /**
+   * @generated modifiable
+   * OneToMany Relation
+   */  
+  public Page<Abastecimento> findAbastecimento(java.lang.String id, Pageable pageable) {
+    // begin-user-code
+    // end-user-code  
+    Page<Abastecimento> result = repository.findAbastecimento(id, pageable);
+    // begin-user-code  
+    // end-user-code        
+    return result;    
+  }
+  /**
+   * @generated modifiable
+   * ManyToMany Relation - Searchable fields - General search (Only strings fields)
+   */  
+  public Page<Posto> listPostoGeneralSearch(java.lang.String search, java.lang.String id, Pageable pageable) {
+    // begin-user-code
+    // end-user-code  
+    Page<Posto> result = repository.listPostoGeneralSearch(search, id, pageable);
+    // begin-user-code
+    // end-user-code
+    return result;            
+  }
+  
+  /**
+   * @generated modifiable
+   * ManyToMany Relation - Searchable fields - Specific search
+   */  
+  public Page<Posto> listPostoSpecificSearch(java.lang.String id, java.lang.String nome, Pageable pageable) {
+    // begin-user-code
+    // end-user-code  
+    Page<Posto> result = repository.listPostoSpecificSearch(id, nome, pageable);
+    // begin-user-code
+    // end-user-code
+    return result;            
+  }
+  
+  /**
+   * @generated modifiable
+   * ManyToMany Relation
+   */  
+  public Page<Posto> listPosto(java.lang.String id, Pageable pageable) {
+    // begin-user-code
+    // end-user-code  
+    Page<Posto> result = repository.listPosto(id, pageable);
     // begin-user-code
     // end-user-code
     return result;            
@@ -177,12 +277,27 @@ public class UserBusiness {
    * @generated modifiable
    * ManyToMany Relation
    */    
-  public int deleteRole(java.lang.String instanceId, java.lang.String relationId) {
+  public int deletePosto(java.lang.String instanceId, java.lang.String relationId) {
     // begin-user-code
     // end-user-code  
-    int result = repository.deleteRole(instanceId, relationId);
+    int result = repository.deletePosto(instanceId, relationId);
     // begin-user-code
     // end-user-code  
     return result;  
+  }
+  /**
+   * Searchable fields - General search (Only strings fields)
+   * @generated
+   */
+  public Page<User> generalSearch(java.lang.String search, Pageable pageable) {
+    return repository.generalSearch(search, pageable);
+  }
+  
+  /**
+   * Searchable fields - Specific search
+   * @generated
+   */
+  public Page<User> specificSearch(java.lang.String email, java.lang.String name, java.lang.String login, Pageable pageable) {
+    return repository.specificSearch(email, name, login, pageable);
   }
 }
